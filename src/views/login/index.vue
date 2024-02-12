@@ -50,8 +50,8 @@ export default {
     // 获取图形验证码
     async getPic () {
       const res = await getPic()
-      this.picUrl = res.data.data.base64
-      this.pickey = res.data.data.key
+      this.picUrl = res.data.base64
+      this.pickey = res.data.key
     },
     // 校验手机号和验证码格式
     vailFn () {
@@ -71,15 +71,10 @@ export default {
     async getCode () {
       if (!this.timer && this.second === this.totalSecond && this.vailFn()) {
         const res = await getMessage(this.picCode, this.pickey, this.mobile)
-        if (res.status === 200) {
-          this.canLogin = true
-          this.$toast('验证码已经发送')
-        } else {
-          this.$toast('验证码错误')
-          return
-        }
-
         console.log(res)
+        this.$toast('验证码已经发送')
+        this.canLogin = true
+
         this.timer = setInterval(() => {
           this.second--
           if (this.second < 1) {
@@ -103,6 +98,9 @@ export default {
 
       const res = await login(this.smsCode, this.mobile)
       console.log(res)
+      this.$store.commit('user/setUserInfo', res.data)
+      this.$toast('登录成功')
+      this.$router.push('/')
     }
   },
   async created () {

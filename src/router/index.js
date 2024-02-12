@@ -13,6 +13,8 @@ import ProDetail from '@/views/prodetail'
 import Pay from '@/views/pay'
 import MyOrder from '@/views/myorder'
 
+import store from '@/store'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +42,22 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+const authUrls = ['/pay', '/myorder']
+
+// 全局前置导航守卫
+router.beforeEach((to, from, next) => {
+  if (!authUrls.includes(to.path)) {
+    next()
+    return
+  }
+  const token = store.getters.getToken
+  if (token) {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 export default router

@@ -5,7 +5,7 @@ export const getPic = () => {
 }
 
 export const getMessage = (captchaCode, captchaKey, mobile) => {
-  return request.get('/captcha/sendSmsCaptcha', {
+  return request.post('/captcha/sendSmsCaptcha', {
     form: {
       captchaCode,
       captchaKey,
@@ -15,7 +15,7 @@ export const getMessage = (captchaCode, captchaKey, mobile) => {
 }
 
 export const login = (smsCode, mobile) => {
-  return request.get('/passport/login', {
+  return request.post('/passport/login', {
     form: {
       smsCode,
       mobile,
